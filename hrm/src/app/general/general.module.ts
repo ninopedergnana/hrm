@@ -16,6 +16,8 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { CreationComponent } from './creation/creation/creation.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
 
 
 
@@ -39,7 +41,9 @@ import { CreationComponent } from './creation/creation/creation.component';
     HttpClientModule,
     MatInputModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    MatCardModule,
+    MatDividerModule
   ]
 })
 export class GeneralModule { }
