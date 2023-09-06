@@ -16,9 +16,8 @@ export class CreationComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   protected displayedColumns: string[] = ['german', 'english', 'amountOfRightAnswers', 'amountOfWrongAnswers', 'actions'];
 
-  private initialWordPairData: WordPair[] = [];
   private internalWordPairData: WordPair[] = [];
-  dataSource = new ExampleDataSource(this.initialWordPairData);
+  dataSource = new ExampleDataSource(this.internalWordPairData);
 
   constructor(
     private wordPairDialog: MatDialog,
@@ -26,6 +25,8 @@ export class CreationComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.internalWordPairData = this.dataHandlerService.getGlobalTestWordPairList();
+    this.dataSource.setData(this.internalWordPairData);
   }
 
   openDialog(isAddingNewWord: boolean, wordPair?: WordPair) {
@@ -45,8 +46,7 @@ export class CreationComponent implements OnInit {
           this.setTestData();
         } else if (result.wordPair && !result.isAddingNewWordPair) {
           this.internalWordPairData = this.internalWordPairData.map(wp => wp.id !== result.wordPair.id ? wp : result.wordPair)
-          this.dataSource.setData(this.internalWordPairData)
-          this.dataHandlerService.setGlobalTestWordPairList(this.internalWordPairData);
+          this.setTestData();
         } else {
           console.log('Dialog was cancelled')
         }
@@ -80,21 +80,19 @@ export class CreationComponent implements OnInit {
 
   resetData(): void {
     this.internalWordPairData = [];
-    this.initialWordPairData = [];
     this.setTestData();
   }
 
   private loadInitialTestData(): void {
-    this.dataHandlerService.getWordPairs()
+    this.dataHandlerService.getDemoWordPairs()
       .subscribe({
-        next: (wordPairs) => {
-          this.initialWordPairData = wordPairs;
-          this.internalWordPairData = [...this.internalWordPairData, ...wordPairs];
+        next: (demoWordPairs) => {
+          this.internalWordPairData = demoWordPairs;
           this.setTestData();
           // handle success message
         }, error: (error) => {
           console.error(error);
-          this.initialWordPairData = [];
+          this.internalWordPairData = [];
           // handle error message
         }
       });

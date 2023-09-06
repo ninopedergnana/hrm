@@ -9,16 +9,16 @@ import { Observable, catchError, map, of } from 'rxjs';
 })
 export class DataHandlerService {
   private jsonUrl = '../../assets/example-words.json'
-  private wordPairs: WordPair[];
+  private demoWordPairs: WordPair[];
   private globalTestWordPairList: WordPair[];
 
   constructor(private http: HttpClient) { }
 
-  getWordPairs(): Observable<WordPair[]> {
+  getDemoWordPairs(): Observable<WordPair[]> {
     return this.http.get<WordPair[]>(this.jsonUrl).pipe(
       map((data) => {
-        this.wordPairs = data;
-        return this.wordPairs;
+        this.demoWordPairs = data;
+        return this.demoWordPairs;
       }),
       catchError((error) => {
         console.error(error);
@@ -27,9 +27,12 @@ export class DataHandlerService {
     );
   }
 
-
   setGlobalTestWordPairList(testWordPairs: WordPair[]): void {
     this.globalTestWordPairList = testWordPairs;
+  }
+
+  getGlobalTestWordPairList(): WordPair[] {
+    return this.globalTestWordPairList;
   }
 
 
