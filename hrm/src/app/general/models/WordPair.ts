@@ -1,4 +1,5 @@
 export interface WordPair {
+    id: number,
     english: string,
     german: string,
     answeredCorrectly: boolean,
