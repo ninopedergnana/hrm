@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { WordPair } from '../../models/WordPair';
-import { MatTableModule } from '@angular/material/table';
-import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
+import { MatSort } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from '../../components/dialog/dialog.component';
 
 const testData: WordPair[] = [
   {
@@ -12,23 +13,21 @@ const testData: WordPair[] = [
     answeredCorrectly: true,
     amountOfRightAnswers: 0,
     amountOfWrongAnswers: 0
-},
-{
+  },
+  {
     id: 2,
     english: "house",
     german: "Haus",
     answeredCorrectly: true,
     amountOfRightAnswers: 0,
     amountOfWrongAnswers: 0
-},
+  },
 ]
 
 @Component({
   selector: 'app-creation',
   templateUrl: './creation.component.html',
   styleUrls: ['./creation.component.css'],
-  standalone: true,
-  imports: [MatTableModule, MatSortModule],
 })
 export class CreationComponent implements OnInit {
 
@@ -37,7 +36,7 @@ export class CreationComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor() {
+  constructor(private wordPairDialog: MatDialog) {
     this.dataSource = new MatTableDataSource(testData)
   }
 
@@ -46,5 +45,13 @@ export class CreationComponent implements OnInit {
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
+  }
+
+  openDialog() {
+    this.wordPairDialog.open(DialogComponent, {
+      data: null,
+      width: '600px',
+      height: '300px',
+    });
   }
 }
