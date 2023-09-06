@@ -1,5 +1,5 @@
 <div class="action-buttons">
-    <button mat-flat-button color="primary" (click)="openDialog()">Add Word Pair</button>
+    <button mat-flat-button color="primary" (click)="openDialog(true)">Add Word Pair</button>
     <button mat-flat-button color="primary" (click)="loadTestData()">Test Data</button>
     <button mat-flat-button color="primary" (click)="resetData()">Reset Data</button>
 </div>
@@ -7,12 +7,12 @@
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z1">
 
     <ng-container matColumnDef="german">
-        <th mat-header-cell *matHeaderCellDef (click)="sortByGerman()"> German </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="sortByGerman()"> German </th>
         <td mat-cell *matCellDef="let row"> {{row.german}} </td>
     </ng-container>
 
     <ng-container matColumnDef="english">
-        <th mat-header-cell *matHeaderCellDef (click)="sortByEnglish()"> English </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="sortByEnglish()"> English </th>
         <td mat-cell *matCellDef="let row"> {{row.english}} </td>
     </ng-container>
 
@@ -24,6 +24,18 @@
     <ng-container matColumnDef="amountOfWrongAnswers">
         <th mat-header-cell *matHeaderCellDef> Wrong </th>
         <td mat-cell *matCellDef="let row"> {{row.amountOfWrongAnswers}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let row">
+            <button mat-icon-button (click)="openDialog(false, row)">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button (click)="deleteRow(row)">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

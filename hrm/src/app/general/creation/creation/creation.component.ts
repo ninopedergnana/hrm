@@ -14,7 +14,7 @@ import { Observable, ReplaySubject } from 'rxjs';
 })
 export class CreationComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
-  protected displayedColumns: string[] = ['german', 'english', 'amountOfRightAnswers', 'amountOfWrongAnswers'];
+  protected displayedColumns: string[] = ['german', 'english', 'amountOfRightAnswers', 'amountOfWrongAnswers', 'actions'];
 
   private initialWordPairData: WordPair[] = [];
   private internalWordPairData: WordPair[] = [];
@@ -28,23 +28,33 @@ export class CreationComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  openDialog() {
+  openDialog(isAddingNewWord: boolean, wordPair?: WordPair) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
-
-    const dialogRef = this.wordPairDialog.open(DialogComponent, {
-      data: null,
-      width: '600px',
-      height: '300px',
-      ...dialogConfig
-    });
+    dialogConfig.width = '600px',
+    dialogConfig.height = '310px',
+    dialogConfig.data = {
+      isAddingNewWordPair: isAddingNewWord, 
+      wordPair: wordPair
+    }
+    const dialogRef = this.wordPairDialog.open(DialogComponent, dialogConfig);
     dialogRef.afterClosed()
-      .subscribe((wordPair: WordPair) => {
-        if (wordPair) {
-          this.internalWordPairData = [...this.internalWordPairData, wordPair]
+      .subscribe((result: {wordPair: WordPair, isAddingNewWordPair: boolean}) => {
+        if (result.wordPair && result.isAddingNewWordPair) {
+          this.internalWordPairData = [...this.internalWordPairData, result.wordPair]
           this.dataSource.setData(this.internalWordPairData)
+        } else if (result.wordPair && !result.isAddingNewWordPair) {
+          this.internalWordPairData = this.internalWordPairData.map(wp => wp.id !== result.wordPair.id ? wp : result.wordPair)
+          this.dataSource.setData(this.internalWordPairData)
+        } else {
+          console.log('Dialog was cancelled')
         }
       })
+  }
+
+  deleteRow(wordPair: WordPair): void {
+    this.internalWordPairData = this.internalWordPairData.filter(wp => wp.id !== wordPair.id)
+    this.dataSource.setData(this.internalWordPairData)
   }
 
   sortByEnglish(): void {
@@ -72,7 +82,6 @@ export class CreationComponent implements OnInit {
     this.dataHandlerService.getWordPairs()
       .subscribe({
         next: (wordPairs) => {
-          console.log(wordPairs);
           this.initialWordPairData = wordPairs;
           this.internalWordPairData = [...this.internalWordPairData, ...wordPairs]
           this.dataSource.setData(this.initialWordPairData);

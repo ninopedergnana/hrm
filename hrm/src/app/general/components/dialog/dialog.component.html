@@ -1,20 +1,21 @@
 <h1 mat-dialog-title> Create New Word Pair </h1>
 <div mat-dialog-content>
+    <div class="create-form">
+        <form [formGroup]="wordPairForm">
+            <mat-form-field appearance="outline">
+                <mat-label>German</mat-label>
+                <input formControlName="german" matInput placeholder="German">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>English</mat-label>
+                <input formControlName="english" matInput placeholder="English">
+            </mat-form-field>
 
-<form [formGroup]="wordPairForm">
-
-    <mat-form-field appearance="outline">
-        <mat-label>German</mat-label>
-        <input formControlName="german" matInput placeholder="German">
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-        <mat-label>English</mat-label>
-        <input formControlName="english" matInput placeholder="English">
-    </mat-form-field>
-
-</form>
-<div mat-dialog-action [align]="'end'">
-    <button mat-flat-button color ="warn" mat-dialog-close (click)="createNewWordPair(false)">Cancel</button>
-    <button style="margin-left: 10px;" mat-flat-button color ="primary" mat-dialog-close (click)="createNewWordPair(true)">Save</button>
-</div>
+        </form>
+    </div>
+    <div mat-dialog-action [align]="'end'">
+        <button mat-flat-button color="warn" mat-dialog-close (click)="cancelDialog()">Cancel</button>
+        <button style="margin-left: 10px;" mat-flat-button color="primary" mat-dialog-close
+            (click)="createNewWordPair()">Save</button>
+    </div>
 </div>
