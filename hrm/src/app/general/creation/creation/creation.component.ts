@@ -42,19 +42,25 @@ export class CreationComponent implements OnInit {
       .subscribe((result: {wordPair: WordPair, isAddingNewWordPair: boolean}) => {
         if (result.wordPair && result.isAddingNewWordPair) {
           this.internalWordPairData = [...this.internalWordPairData, result.wordPair]
-          this.dataSource.setData(this.internalWordPairData)
+          this.setTestData();
         } else if (result.wordPair && !result.isAddingNewWordPair) {
           this.internalWordPairData = this.internalWordPairData.map(wp => wp.id !== result.wordPair.id ? wp : result.wordPair)
           this.dataSource.setData(this.internalWordPairData)
+          this.dataHandlerService.setGlobalTestWordPairList(this.internalWordPairData);
         } else {
           console.log('Dialog was cancelled')
         }
       })
   }
 
+  private setTestData(): void{
+    this.dataSource.setData(this.internalWordPairData);
+    this.dataHandlerService.setGlobalTestWordPairList(this.internalWordPairData);
+  }
+
   deleteRow(wordPair: WordPair): void {
     this.internalWordPairData = this.internalWordPairData.filter(wp => wp.id !== wordPair.id)
-    this.dataSource.setData(this.internalWordPairData)
+    this.setTestData();
   }
 
   sortByEnglish(): void {
@@ -75,7 +81,7 @@ export class CreationComponent implements OnInit {
   resetData(): void {
     this.internalWordPairData = [];
     this.initialWordPairData = [];
-    this.dataSource.setData([]);
+    this.setTestData();
   }
 
   private loadInitialTestData(): void {
@@ -83,8 +89,8 @@ export class CreationComponent implements OnInit {
       .subscribe({
         next: (wordPairs) => {
           this.initialWordPairData = wordPairs;
-          this.internalWordPairData = [...this.internalWordPairData, ...wordPairs]
-          this.dataSource.setData(this.initialWordPairData);
+          this.internalWordPairData = [...this.internalWordPairData, ...wordPairs];
+          this.setTestData();
           // handle success message
         }, error: (error) => {
           console.error(error);
@@ -110,6 +116,7 @@ class ExampleDataSource extends DataSource<WordPair> {
   disconnect() { }
 
   setData(data: WordPair[]) {
+
     this._dataStream.next(data);
   }
 }
