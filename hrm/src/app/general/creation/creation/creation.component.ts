@@ -14,10 +14,10 @@ import { Observable, ReplaySubject } from 'rxjs';
 })
 export class CreationComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
-  protected displayedColumns: string[] = ['german', 'english', 'amountOfRightAnswers', 'amountOfWrongAnswers', 'actions'];
+  protected displayedColumns: string[] = ['german', 'english', 'actions'];
 
   private internalWordPairData: WordPair[] = [];
-  dataSource = new ExampleDataSource(this.internalWordPairData);
+  dataSource = new ExampleDataSource([]);
 
   constructor(
     private wordPairDialog: MatDialog,
@@ -26,6 +26,8 @@ export class CreationComponent implements OnInit {
 
   ngOnInit(): void {
     this.internalWordPairData = this.dataHandlerService.getGlobalTestWordPairList();
+    // sort by german by default
+    this.internalWordPairData.sort((a, b) => (a.german.toLowerCase() > b.german.toLowerCase()) ? 1 : -1)
     this.dataSource.setData(this.internalWordPairData);
   }
 
@@ -53,7 +55,9 @@ export class CreationComponent implements OnInit {
       })
   }
 
-  private setTestData(): void{
+  private setTestData(): void {
+    // sort by german by default
+    this.internalWordPairData.sort((a, b) => (a.german.toLowerCase() > b.german.toLowerCase()) ? 1 : -1)
     this.dataSource.setData(this.internalWordPairData);
     this.dataHandlerService.setGlobalTestWordPairList(this.internalWordPairData);
   }
@@ -64,12 +68,12 @@ export class CreationComponent implements OnInit {
   }
 
   sortByEnglish(): void {
-    this.internalWordPairData.sort((a, b) => (a.english > b.english) ? 1 : -1)
+    this.internalWordPairData.sort((a, b) => (a.english.toLowerCase() > b.english.toLowerCase()) ? 1 : -1)
     this.dataSource.setData(this.internalWordPairData)
   }
 
   sortByGerman(): void {
-    this.internalWordPairData.sort((a, b) => (a.german > b.german) ? 1 : -1)
+    this.internalWordPairData.sort((a, b) => (a.german.toLowerCase() > b.german.toLowerCase()) ? 1 : -1)
     this.dataSource.setData(this.internalWordPairData)
   }
 
@@ -89,11 +93,9 @@ export class CreationComponent implements OnInit {
         next: (demoWordPairs) => {
           this.internalWordPairData = demoWordPairs;
           this.setTestData();
-          // handle success message
         }, error: (error) => {
           console.error(error);
           this.internalWordPairData = [];
-          // handle error message
         }
       });
   }
@@ -114,7 +116,6 @@ class ExampleDataSource extends DataSource<WordPair> {
   disconnect() { }
 
   setData(data: WordPair[]) {
-
     this._dataStream.next(data);
   }
 }
