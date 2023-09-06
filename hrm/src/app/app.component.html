@@ -1,7 +1,7 @@
 <div class="header">
-  <button mat-raised-button routerLink="/creation" routerLinkActive="active" ariaCurrentWhenActive="page"
+  <button mat-raised-button routerLink="/creation" routerLinkActive="active" ariaCurrentWhenActive="page" [disabled]="isTestingMode"
       color="primary">Creation</button>
-  <button mat-raised-button routerLink="/learning" routerLinkActive="active" ariaCurrentWhenActive="page"
+  <button mat-raised-button routerLink="/learning" routerLinkActive="active" ariaCurrentWhenActive="page" [disabled]="isTestingMode"
       color="primary">Learning</button>
   <button mat-raised-button routerLink="/testing" routerLinkActive="active" ariaCurrentWhenActive="page"
       color="primary">Testing</button>
