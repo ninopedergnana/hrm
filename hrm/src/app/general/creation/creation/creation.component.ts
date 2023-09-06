@@ -31,11 +31,23 @@ export class CreationComponent implements OnInit {
   }
 
   openDialog() {
-    this.wordPairDialog.open(DialogComponent, {
-      data: null,
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+
+    const dialogRef = this.wordPairDialog.open(DialogComponent, {
+      data: null, 
       width: '600px',
       height: '300px',
+      ...dialogConfig
     });
+    dialogRef.afterClosed()
+      .subscribe((wordPair: WordPair) => {
+        if(wordPair) {
+          this.internalWordPairData = [...this.internalWordPairData, wordPair]
+          this.dataSource.setData(this.internalWordPairData)
+        }
+      })
+  }
   }
 
   loadTestData(): void {
@@ -44,16 +56,18 @@ export class CreationComponent implements OnInit {
 
   private loadInitialTestData(): void {
     this.dataHandlerService.getWordPairs()
-    .subscribe({
-      next: (wordPairs) => {
-        this.initialWordPairData = wordPairs;
-        // handle success message
-      }, error: (error) => {
-        console.error(error);
-        this.initialWordPairData = [];
-        // handle error message
-      }
-    });
+      .subscribe({
+        next: (wordPairs) => {
+          console.log(wordPairs);
+          this.initialWordPairData = wordPairs;
+          this.internalWordPairData = [...this.internalWordPairData, ...wordPairs]
+          // handle success message
+        }, error: (error) => {
+          console.error(error);
+          this.initialWordPairData = [];
+          // handle error message
+        }
+      });
   }
 }
 
@@ -69,7 +83,7 @@ class ExampleDataSource extends DataSource<WordPair> {
     return this._dataStream;
   }
 
-  disconnect() {}
+  disconnect() { }
 
   setData(data: WordPair[]) {
     this._dataStream.next(data);

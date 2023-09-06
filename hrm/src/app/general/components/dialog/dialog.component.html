@@ -14,7 +14,7 @@
 
 </form>
 <div mat-dialog-action [align]="'end'">
-    <button mat-flat-button color ="warn" mat-dialog-close>Cancel</button>
-    <button style="margin-left: 10px;" mat-flat-button color ="primary" mat-dialog-close (click)="createNewWordPair()">Save</button>
+    <button mat-flat-button color ="warn" mat-dialog-close (click)="createNewWordPair(false)">Cancel</button>
+    <button style="margin-left: 10px;" mat-flat-button color ="primary" mat-dialog-close (click)="createNewWordPair(true)">Save</button>
 </div>
 </div>
