@@ -6,6 +6,7 @@ import { DialogComponent } from '../../components/dialog/dialog.component';
 import { DataHandlerService } from '../../services/data-handler.service';
 import { DataSource } from '@angular/cdk/table';
 import { Observable, ReplaySubject } from 'rxjs';
+import { LocalStorageService } from '../../services/local-storage.service';
 
 @Component({
   selector: 'app-creation',
@@ -21,7 +22,8 @@ export class CreationComponent implements OnInit {
 
   constructor(
     private wordPairDialog: MatDialog,
-    private dataHandlerService: DataHandlerService
+    private dataHandlerService: DataHandlerService,
+    private localStorageService: LocalStorageService
   ) { }
 
   ngOnInit(): void {
