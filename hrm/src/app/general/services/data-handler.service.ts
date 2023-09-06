@@ -10,7 +10,7 @@ import { Observable, catchError, map, of } from 'rxjs';
 export class DataHandlerService {
   private jsonUrl = '../../assets/example-words.json'
   private demoWordPairs: WordPair[];
-  private globalTestWordPairList: WordPair[];
+  protected globalTestWordPairList: WordPair[] = [];
 
   constructor(private http: HttpClient) { }
 
