@@ -1,1 +1,30 @@
-<p>testing works!</p>
+<button mat-flat-button *ngIf="!testingHasStarted" color="primary" (click)="startTest()">Start Test</button>
+<mat-card *ngIf="testingHasStarted" class="example-card">
+  <mat-card-header>
+    <h1>{{questionLanguageWord}}</h1>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="questionForm">
+      <mat-form-field appearance="outline">
+        <input formControlName="wordControl" matInput placeholder="Word...">
+      </mat-form-field>
+    </form>
+    <mat-divider></mat-divider>
+  </mat-card-content>
+  <mat-card-actions [align]="'end'">
+    <button mat-button (click)="checkAnswer()">NEXT</button>
+  </mat-card-actions>
+</mat-card>
+<mat-card *ngIf="!testingHasStarted" class="example-card">
+  <mat-card-content>
+    <p>Make sure that you have testing data in the Creation tab.</p>
+  </mat-card-content>
+</mat-card>
+<mat-card *ngIf="showStats" class="example-card">
+    <mat-card-header>
+        <h1>Statistics</h1>
+      </mat-card-header>
+    <mat-card-content>
+      <p>You have answered {{answeredCorrectly}} questions correctly and {{answeredInCorrectly}} wrongly. You have therefore answered {{percentage}}% of all the questions correctly</p>
+    </mat-card-content>
+  </mat-card>

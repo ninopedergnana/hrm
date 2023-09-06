@@ -1,1 +1,24 @@
-<p>learning works!</p>
+<button mat-flat-button *ngIf="!trainingHasStarted" color="primary" (click)="startTraining()">Start Training</button>
+<mat-card *ngIf="trainingHasStarted" class="example-card">
+  <mat-card-header>
+    <h1>{{questionLanguageWord}}</h1>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="questionForm">
+      <mat-form-field appearance="outline">
+        <input formControlName="wordControl" matInput placeholder="Word...">
+      </mat-form-field>
+    </form>
+    <p *ngIf="answerIsFalse">Correct answer: {{answerLanguageWord}} </p>
+    <mat-divider></mat-divider>
+  </mat-card-content>
+  <mat-card-actions [align]="'end'">
+    <button mat-button [disabled]="!isNextButtonDisabled" (click)="checkAnswer()">Check Answer</button>
+    <button mat-button [disabled]="isNextButtonDisabled" (click)="setRandomQuestionWord()">NEXT</button>
+  </mat-card-actions>
+</mat-card>
+<mat-card *ngIf="!trainingHasStarted" class="example-card">
+  <mat-card-content>
+    <p>Make sure that you have training data in the Creation tab.</p>
+  </mat-card-content>
+</mat-card>
