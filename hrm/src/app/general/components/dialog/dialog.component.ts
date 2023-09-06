@@ -42,11 +42,7 @@ export class DialogComponent implements OnInit {
   }
 
   createNewWordPair(): void {
-    console.log(this.internalDialogData);
-    
     if (this.internalDialogData.isAddingNewWordPair) {
-      console.log(this.internalDialogData);
-      
       this.internalWordPair = {
         id: this.generateRandomId(),
         english: this.wordPairForm.controls['english'].value,
@@ -62,8 +58,6 @@ export class DialogComponent implements OnInit {
         german: this.wordPairForm.controls['german'].value,
       }
     }
-    console.log(this.internalWordPair);
-    
     this.dialogRef.close({ wordPair: this.internalWordPair, isAddingNewWordPair: this.internalDialogData.isAddingNewWordPair });
   }
 
