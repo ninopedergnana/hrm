@@ -39,7 +39,7 @@ import { CreationComponent } from './creation/creation/creation.component';
     HttpClientModule,
     MatInputModule,
     ReactiveFormsModule,
-    FormsModule,
+    FormsModule
   ]
 })
 export class GeneralModule { }

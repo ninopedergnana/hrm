@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { WordPair } from '../../models/WordPair';
 import { MatSort } from '@angular/material/sort';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DialogComponent } from '../../components/dialog/dialog.component';
 import { DataHandlerService } from '../../services/data-handler.service';
 import { DataSource } from '@angular/cdk/table';
@@ -20,14 +20,13 @@ export class CreationComponent implements OnInit {
   private internalWordPairData: WordPair[] = [];
   dataSource = new ExampleDataSource(this.initialWordPairData);
 
-
   constructor(
-    private wordPairDialog: MatDialog, 
+    private wordPairDialog: MatDialog,
     private dataHandlerService: DataHandlerService
-    ) {}
+  ) { }
 
   ngOnInit(): void {
-    this.loadInitialTestData
+    this.loadInitialTestData();
   }
 
   openDialog() {
@@ -48,10 +47,25 @@ export class CreationComponent implements OnInit {
         }
       })
   }
+
+  sortByEnglish(): void {
+    this.internalWordPairData.sort((a, b) => (a.english > b.english) ? 1 : -1)
+    this.dataSource.setData(this.internalWordPairData)
+  }
+
+  sortByGerman(): void {
+    this.internalWordPairData.sort((a, b) => (a.german > b.german) ? 1 : -1)
+    this.dataSource.setData(this.internalWordPairData)
   }
 
   loadTestData(): void {
     this.dataSource.setData(this.initialWordPairData);
+  }
+
+  resetData(): void {
+    this.internalWordPairData = [];
+    this.initialWordPairData = [];
+    this.dataSource.setData([]);
   }
 
   private loadInitialTestData(): void {
