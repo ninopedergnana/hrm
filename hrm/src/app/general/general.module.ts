@@ -12,14 +12,19 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { HttpClientModule } from '@angular/common/http';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { DialogComponent } from './components/dialog/dialog.component';
+import { CreationComponent } from './creation/creation/creation.component';
 
 
 
 @NgModule({
   declarations: [
     LearningComponent,
-    TestingComponent
+    TestingComponent,
+    CreationComponent,
+    DialogComponent
   ],
   imports: [
     CommonModule,

@@ -12,13 +12,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { HttpClientModule } from '@angular/common/http';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { GeneralModule } from './general/general.module';
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
+    GeneralModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
