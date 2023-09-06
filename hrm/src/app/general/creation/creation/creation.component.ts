@@ -1,28 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
 import { WordPair } from '../../models/WordPair';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../../components/dialog/dialog.component';
-
-const testData: WordPair[] = [
-  {
-    id: 1,
-    english: "car",
-    german: "Auto",
-    answeredCorrectly: true,
-    amountOfRightAnswers: 0,
-    amountOfWrongAnswers: 0
-  },
-  {
-    id: 2,
-    english: "house",
-    german: "Haus",
-    answeredCorrectly: true,
-    amountOfRightAnswers: 0,
-    amountOfWrongAnswers: 0
-  },
-]
+import { DataHandlerService } from '../../services/data-handler.service';
+import { DataSource } from '@angular/cdk/table';
+import { Observable, ReplaySubject } from 'rxjs';
 
 @Component({
   selector: 'app-creation',
@@ -30,21 +13,21 @@ const testData: WordPair[] = [
   styleUrls: ['./creation.component.css'],
 })
 export class CreationComponent implements OnInit {
-
-  protected displayedColumns: string[] = ['id', 'german', 'english', 'amountOfRightAnswers', 'amountOfWrongAnswers'];
-  dataSource: MatTableDataSource<WordPair>;
-
   @ViewChild(MatSort) sort: MatSort;
+  protected displayedColumns: string[] = ['id', 'german', 'english', 'amountOfRightAnswers', 'amountOfWrongAnswers'];
 
-  constructor(private wordPairDialog: MatDialog) {
-    this.dataSource = new MatTableDataSource(testData)
-  }
+  private initialWordPairData: WordPair[] = [];
+  private internalWordPairData: WordPair[] = [];
+  dataSource = new ExampleDataSource(this.initialWordPairData);
+
+
+  constructor(
+    private wordPairDialog: MatDialog, 
+    private dataHandlerService: DataHandlerService
+    ) {}
 
   ngOnInit(): void {
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
+    this.loadInitialTestData
   }
 
   openDialog() {
@@ -53,5 +36,42 @@ export class CreationComponent implements OnInit {
       width: '600px',
       height: '300px',
     });
+  }
+
+  loadTestData(): void {
+    this.dataSource.setData(this.initialWordPairData);
+  }
+
+  private loadInitialTestData(): void {
+    this.dataHandlerService.getWordPairs()
+    .subscribe({
+      next: (wordPairs) => {
+        this.initialWordPairData = wordPairs;
+        // handle success message
+      }, error: (error) => {
+        console.error(error);
+        this.initialWordPairData = [];
+        // handle error message
+      }
+    });
+  }
+}
+
+class ExampleDataSource extends DataSource<WordPair> {
+  private _dataStream = new ReplaySubject<WordPair[]>();
+
+  constructor(initialData: WordPair[]) {
+    super();
+    this.setData(initialData);
+  }
+
+  connect(): Observable<WordPair[]> {
+    return this._dataStream;
+  }
+
+  disconnect() {}
+
+  setData(data: WordPair[]) {
+    this._dataStream.next(data);
   }
 }

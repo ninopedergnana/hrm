@@ -1,0 +1,34 @@
+[
+    {
+        "id": 1,
+        "english": "car",
+        "german": "Auto",
+        "answeredCorrectly": true,
+        "amountOfWrongAnswers": 0,
+        "amountOfRightAnswers": 0
+    },
+    {
+        "id": 2,
+        "english": "house",
+        "german": "Haus",
+        "answeredCorrectly": true,
+        "amountOfWrongAnswers": 0,
+        "amountOfRightAnswers": 0
+    },
+    {
+        "id": 3,
+        "english": "tree",
+        "german": "Baum",
+        "answeredCorrectly": true,
+        "amountOfWrongAnswers": 0,
+        "amountOfRightAnswers": 0
+    },
+    {
+        "id": 4,
+        "english": "table",
+        "german": "Tisch",
+        "answeredCorrectly": true,
+        "amountOfWrongAnswers": 0,
+        "amountOfRightAnswers": 0
+    }
+]
