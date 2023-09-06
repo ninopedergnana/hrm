@@ -14,7 +14,7 @@ import { Observable, ReplaySubject } from 'rxjs';
 })
 export class CreationComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
-  protected displayedColumns: string[] = ['id', 'german', 'english', 'amountOfRightAnswers', 'amountOfWrongAnswers'];
+  protected displayedColumns: string[] = ['german', 'english', 'amountOfRightAnswers', 'amountOfWrongAnswers'];
 
   private initialWordPairData: WordPair[] = [];
   private internalWordPairData: WordPair[] = [];
@@ -26,7 +26,6 @@ export class CreationComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadInitialTestData();
   }
 
   openDialog() {
@@ -34,14 +33,14 @@ export class CreationComponent implements OnInit {
     dialogConfig.disableClose = true;
 
     const dialogRef = this.wordPairDialog.open(DialogComponent, {
-      data: null, 
+      data: null,
       width: '600px',
       height: '300px',
       ...dialogConfig
     });
     dialogRef.afterClosed()
       .subscribe((wordPair: WordPair) => {
-        if(wordPair) {
+        if (wordPair) {
           this.internalWordPairData = [...this.internalWordPairData, wordPair]
           this.dataSource.setData(this.internalWordPairData)
         }
@@ -59,7 +58,8 @@ export class CreationComponent implements OnInit {
   }
 
   loadTestData(): void {
-    this.dataSource.setData(this.initialWordPairData);
+    this.resetData();
+    this.loadInitialTestData();
   }
 
   resetData(): void {
@@ -75,6 +75,7 @@ export class CreationComponent implements OnInit {
           console.log(wordPairs);
           this.initialWordPairData = wordPairs;
           this.internalWordPairData = [...this.internalWordPairData, ...wordPairs]
+          this.dataSource.setData(this.initialWordPairData);
           // handle success message
         }, error: (error) => {
           console.error(error);
